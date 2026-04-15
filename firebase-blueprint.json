@@ -1,0 +1,117 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Private user profile data",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "role": { "type": "string", "enum": ["fan", "player", "admin"] },
+        "profileImage": { "type": "string", "format": "uri" },
+        "favoritePlayer": { "type": "string" },
+        "bio": { "type": "string" }
+      },
+      "required": ["uid", "name", "email", "role"]
+    },
+    "UserPublic": {
+      "title": "UserPublic",
+      "description": "Publicly accessible user information",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "name": { "type": "string" },
+        "profileImage": { "type": "string", "format": "uri" },
+        "role": { "type": "string" }
+      },
+      "required": ["uid", "name"]
+    },
+    "Post": {
+      "title": "Post",
+      "description": "News, announcements, or community posts",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "content": { "type": "string" },
+        "image": { "type": "string", "format": "uri" },
+        "authorId": { "type": "string" },
+        "authorName": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "type": { "type": "string", "enum": ["news", "announcement", "transfer", "community"] },
+        "likesCount": { "type": "number" }
+      },
+      "required": ["title", "content", "authorId", "type", "createdAt"]
+    },
+    "Player": {
+      "title": "Player",
+      "description": "Official club player profile",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "position": { "type": "string" },
+        "number": { "type": "number" },
+        "image": { "type": "string", "format": "uri" },
+        "bio": { "type": "string" }
+      },
+      "required": ["name", "position", "number"]
+    },
+    "Match": {
+      "title": "Match",
+      "description": "Match details and results",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "opponent": { "type": "string" },
+        "date": { "type": "string", "format": "date-time" },
+        "stadium": { "type": "string" },
+        "status": { "type": "string", "enum": ["upcoming", "live", "finished"] },
+        "homeScore": { "type": "number" },
+        "awayScore": { "type": "number" },
+        "isHome": { "type": "boolean" }
+      },
+      "required": ["opponent", "date", "stadium", "status"]
+    },
+    "Comment": {
+      "title": "Comment",
+      "description": "Comments on posts",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "postId": { "type": "string" },
+        "userId": { "type": "string" },
+        "userName": { "type": "string" },
+        "userImage": { "type": "string" },
+        "content": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["postId", "userId", "content", "createdAt"]
+    },
+    "Standing": {
+      "title": "Standing",
+      "description": "League table standings",
+      "type": "object",
+      "properties": {
+        "teamName": { "type": "string" },
+        "played": { "type": "number" },
+        "won": { "type": "number" },
+        "draw": { "type": "number" },
+        "lost": { "type": "number" },
+        "points": { "type": "number" },
+        "goalDifference": { "type": "number" }
+      },
+      "required": ["teamName", "played", "won", "draw", "lost", "points"]
+    }
+  },
+  "firestore": {
+    "/users/{uid}": { "schema": "User", "description": "Private user profiles" },
+    "/users_public/{uid}": { "schema": "UserPublic", "description": "Public user profiles" },
+    "/posts/{postId}": { "schema": "Post", "description": "Club news and community posts" },
+    "/players/{playerId}": { "schema": "Player", "description": "Club players" },
+    "/matches/{matchId}": { "schema": "Match", "description": "Match schedule and results" },
+    "/posts/{postId}/comments/{commentId}": { "schema": "Comment", "description": "Comments on posts" },
+    "/standings/{teamId}": { "schema": "Standing", "description": "League table" }
+  }
+}
